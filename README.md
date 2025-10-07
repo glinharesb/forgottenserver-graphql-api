@@ -24,7 +24,7 @@ A modern, type-safe GraphQL API for [The Forgotten Server (TFS)](https://github.
 
 ## Tech Stack
 
-- **[Go 1.25+](https://go.dev/)** - Programming language
+- **[Go 1.24+](https://go.dev/)** - Programming language
 - **[gqlgen](https://gqlgen.com/)** - GraphQL server library and code generator
 - **[MySQL](https://www.mysql.com/)** - Database (compatible with TFS schema)
 - **[sqlx](https://github.com/jmoiron/sqlx)** - Enhanced SQL database driver
@@ -33,7 +33,7 @@ A modern, type-safe GraphQL API for [The Forgotten Server (TFS)](https://github.
 
 ## Prerequisites
 
-- Go 1.25 or higher
+- Go 1.24 or higher
 - MySQL 5.7+ or MariaDB 10.2+
 - [The Forgotten Server v1.4.2](https://github.com/otland/forgottenserver/tree/v1.4.2) database schema
 
