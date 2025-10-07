@@ -1,0 +1,29 @@
+# Development Dockerfile with hot reload support
+FROM golang:1.25-alpine AS development
+
+# Install development tools
+RUN apk add --no-cache git make bash curl
+
+# Install Air for hot reload
+RUN go install github.com/cosmtrek/air@latest
+
+# Install Delve for debugging
+RUN go install github.com/go-delve/delve/cmd/dlv@latest
+
+# Set working directory
+WORKDIR /app
+
+# Copy go mod files
+COPY go.mod go.sum ./
+
+# Download dependencies
+RUN go mod download
+
+# Copy source code (will be overridden by volume mount)
+COPY . .
+
+# Expose ports
+EXPOSE 8080 2345
+
+# Default command (can be overridden in docker-compose)
+CMD ["air", "-c", ".air.toml"]

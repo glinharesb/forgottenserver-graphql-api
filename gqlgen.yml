@@ -1,0 +1,160 @@
+# GraphQL schema location
+schema:
+  - internal/graph/*.graphqls
+
+# Where should the generated code go?
+exec:
+  filename: internal/graph/generated.go
+  package: graph
+
+# Where should the model code go?
+model:
+  filename: internal/graph/model/models_gen.go
+  package: model
+
+# Where should the resolver code go?
+resolver:
+  layout: follow-schema
+  dir: internal/graph
+  package: graph
+  filename_template: "{name}.resolvers.go"
+
+# Autobind existing models
+autobind:
+  - github.com/glinharesb/forgottenserver-graphql-api/internal/models
+
+# Model overrides to use our custom models
+models:
+  ID:
+    model:
+      - github.com/99designs/gqlgen/graphql.ID
+      - github.com/99designs/gqlgen/graphql.Int
+      - github.com/99designs/gqlgen/graphql.Int64
+      - github.com/99designs/gqlgen/graphql.Int32
+  Int:
+    model:
+      - github.com/99designs/gqlgen/graphql.Int
+      - github.com/99designs/gqlgen/graphql.Int64
+      - github.com/99designs/gqlgen/graphql.Int32
+
+  # Account models
+  Account:
+    model: github.com/glinharesb/forgottenserver-graphql-api/internal/models.Account
+    fields:
+      players:
+        resolver: true
+      bans:
+        resolver: true
+      storage:
+        resolver: true
+      vipList:
+        resolver: true
+  AccountBan:
+    model: github.com/glinharesb/forgottenserver-graphql-api/internal/models.AccountBan
+    fields:
+      account:
+        resolver: true
+      bannedBy:
+        resolver: true
+  AccountStorage:
+    model: github.com/glinharesb/forgottenserver-graphql-api/internal/models.AccountStorage
+  VipEntry:
+    model: github.com/glinharesb/forgottenserver-graphql-api/internal/models.VipEntry
+    fields:
+      player:
+        resolver: true
+
+  # Player models
+  Player:
+    model: github.com/glinharesb/forgottenserver-graphql-api/internal/models.Player
+    fields:
+      account:
+        resolver: true
+      town:
+        resolver: true
+      deaths:
+        resolver: true
+      guild:
+        resolver: true
+  PlayerDeath:
+    model: github.com/glinharesb/forgottenserver-graphql-api/internal/models.PlayerDeath
+  PlayerStorage:
+    model: github.com/glinharesb/forgottenserver-graphql-api/internal/models.PlayerStorage
+
+  # Town models
+  Town:
+    model: github.com/glinharesb/forgottenserver-graphql-api/internal/models.Town
+
+  # Guild models
+  Guild:
+    model: github.com/glinharesb/forgottenserver-graphql-api/internal/models.Guild
+    fields:
+      owner:
+        resolver: true
+      ranks:
+        resolver: true
+      members:
+        resolver: true
+  GuildRank:
+    model: github.com/glinharesb/forgottenserver-graphql-api/internal/models.GuildRank
+    fields:
+      guild:
+        resolver: true
+  GuildMembership:
+    model: github.com/glinharesb/forgottenserver-graphql-api/internal/models.GuildMembership
+    fields:
+      player:
+        resolver: true
+      guild:
+        resolver: true
+      rank:
+        resolver: true
+  GuildInvite:
+    model: github.com/glinharesb/forgottenserver-graphql-api/internal/models.GuildInvite
+    fields:
+      player:
+        resolver: true
+      guild:
+        resolver: true
+  GuildWar:
+    model: github.com/glinharesb/forgottenserver-graphql-api/internal/models.GuildWar
+    fields:
+      kills:
+        resolver: true
+  GuildWarKill:
+    model: github.com/glinharesb/forgottenserver-graphql-api/internal/models.GuildWarKill
+
+  # House models
+  House:
+    model: github.com/glinharesb/forgottenserver-graphql-api/internal/models.House
+    fields:
+      town:
+        resolver: true
+  HouseList:
+    model: github.com/glinharesb/forgottenserver-graphql-api/internal/models.HouseList
+
+  # Market models
+  MarketOffer:
+    model: github.com/glinharesb/forgottenserver-graphql-api/internal/models.MarketOffer
+    fields:
+      player:
+        resolver: true
+  MarketHistory:
+    model: github.com/glinharesb/forgottenserver-graphql-api/internal/models.MarketHistory
+    fields:
+      player:
+        resolver: true
+
+  # Input types
+  CreateAccountInput:
+    model: github.com/glinharesb/forgottenserver-graphql-api/internal/models.CreateAccountInput
+  CreatePlayerInput:
+    model: github.com/glinharesb/forgottenserver-graphql-api/internal/models.CreatePlayerInput
+  CreateTownInput:
+    model: github.com/glinharesb/forgottenserver-graphql-api/internal/models.CreateTownInput
+  CreateGuildInput:
+    model: github.com/glinharesb/forgottenserver-graphql-api/internal/models.CreateGuildInput
+  BanAccountInput:
+    model: github.com/glinharesb/forgottenserver-graphql-api/internal/models.BanAccountInput
+  CreateMarketOfferInput:
+    model: github.com/glinharesb/forgottenserver-graphql-api/internal/models.CreateMarketOfferInput

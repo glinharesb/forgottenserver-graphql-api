@@ -1,0 +1,51 @@
+# Git
+.git
+.gitignore
+.github
+
+# Documentation
+README.md
+LICENSE
+*.md
+
+# Build artifacts
+bin/
+dist/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test files
+*.test
+*.out
+coverage.out
+testdata/
+
+# Development
+.env
+.env.local
+.env.*.local
+tmp/
+.air.toml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Dependencies (will be downloaded in Docker)
+vendor/
+
+# Go workspace
+go.work
+go.work.sum
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore

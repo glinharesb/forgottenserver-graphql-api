@@ -1,0 +1,298 @@
+type Query {
+  # Accounts
+  account(id: ID!): Account
+  accounts(limit: Int = 10): [Account!]!
+
+  # Players
+  player(id: ID!): Player
+  players(accountId: ID!): [Player!]!
+  playersOnline: [Player!]!
+
+  # Towns
+  town(id: ID!): Town
+  towns: [Town!]!
+
+  # Guilds
+  guild(id: ID!): Guild
+  guilds: [Guild!]!
+  guildWars(guildId: ID): [GuildWar!]!
+
+  # Houses
+  house(id: ID!): House
+  houses(townId: ID): [House!]!
+
+  # Market
+  marketOffers(itemType: Int): [MarketOffer!]!
+  marketHistory(playerId: ID!): [MarketHistory!]!
+}
+
+type Mutation {
+  # Accounts
+  createAccount(input: CreateAccountInput!): Account!
+  banAccount(input: BanAccountInput!): AccountBan!
+
+  # Players
+  createPlayer(input: CreatePlayerInput!): Player!
+
+  # Towns
+  createTown(input: CreateTownInput!): Town!
+
+  # Guilds
+  createGuild(input: CreateGuildInput!): Guild!
+  inviteToGuild(guildId: ID!, playerId: ID!): Boolean!
+  acceptGuildInvite(guildId: ID!, playerId: ID!): Boolean!
+
+  # Houses
+  bidHouse(houseId: ID!, playerId: ID!, bidAmount: Int!): House!
+
+  # Market
+  createMarketOffer(input: CreateMarketOfferInput!): MarketOffer!
+}
+
+# Account Types
+type Account {
+  id: ID!
+  name: String!
+  email: String!
+  type: Int!
+  premiumEndsAt: Int!
+  creation: Int!
+  players: [Player!]!
+  bans: [AccountBan!]!
+  storage: [AccountStorage!]!
+  vipList: [VipEntry!]!
+}
+
+type AccountBan {
+  accountId: ID!
+  account: Account!
+  reason: String!
+  bannedAt: Int!
+  expiresAt: Int!
+  bannedBy: Player!
+}
+
+type AccountStorage {
+  accountId: ID!
+  key: Int!
+  value: Int!
+}
+
+type VipEntry {
+  accountId: ID!
+  playerId: ID!
+  player: Player!
+  description: String!
+  icon: Int!
+  notify: Boolean!
+}
+
+# Player Types
+type Player {
+  id: ID!
+  name: String!
+  accountId: ID!
+  account: Account!
+  level: Int!
+  vocation: Int!
+  health: Int!
+  healthMax: Int!
+  experience: Int!
+  lookBody: Int!
+  lookFeet: Int!
+  lookHead: Int!
+  lookLegs: Int!
+  lookType: Int!
+  lookAddons: Int!
+  magLevel: Int!
+  mana: Int!
+  manaMax: Int!
+  soul: Int!
+  townId: Int!
+  town: Town
+  posX: Int!
+  posY: Int!
+  posZ: Int!
+  cap: Int!
+  sex: Int!
+  lastLogin: Int!
+  balance: Int!
+  deaths: [PlayerDeath!]!
+  guild: GuildMembership
+}
+
+type PlayerDeath {
+  playerId: ID!
+  time: Int!
+  level: Int!
+  killedBy: String!
+  isPlayer: Boolean!
+  mostDamageBy: String!
+  mostDamageIsPlayer: Boolean!
+}
+
+type PlayerStorage {
+  playerId: ID!
+  key: Int!
+  value: Int!
+}
+
+# Town Types
+type Town {
+  id: ID!
+  name: String!
+  posX: Int!
+  posY: Int!
+  posZ: Int!
+}
+
+# Guild Types
+type Guild {
+  id: ID!
+  name: String!
+  ownerId: ID!
+  owner: Player!
+  creationData: Int!
+  motd: String!
+  ranks: [GuildRank!]!
+  members: [GuildMembership!]!
+}
+
+type GuildRank {
+  id: ID!
+  guildId: ID!
+  guild: Guild!
+  name: String!
+  level: Int!
+}
+
+type GuildMembership {
+  playerId: ID!
+  player: Player!
+  guildId: ID!
+  guild: Guild!
+  rankId: ID!
+  rank: GuildRank!
+  nick: String!
+}
+
+type GuildInvite {
+  playerId: ID!
+  guildId: ID!
+  player: Player!
+  guild: Guild!
+}
+
+type GuildWar {
+  id: ID!
+  guild1: Int!
+  guild2: Int!
+  name1: String!
+  name2: String!
+  status: Int!
+  started: Int!
+  ended: Int!
+  kills: [GuildWarKill!]!
+}
+
+type GuildWarKill {
+  id: ID!
+  killer: String!
+  target: String!
+  killerGuild: Int!
+  targetGuild: Int!
+  warId: ID!
+  time: Int!
+}
+
+# House Types
+type House {
+  id: ID!
+  owner: Int!
+  paid: Int!
+  warnings: Int!
+  name: String!
+  rent: Int!
+  townId: Int!
+  town: Town
+  bid: Int!
+  bidEnd: Int!
+  lastBid: Int!
+  highestBidder: Int!
+  size: Int!
+  beds: Int!
+}
+
+type HouseList {
+  houseId: ID!
+  listId: Int!
+  list: String!
+}
+
+# Market Types
+type MarketOffer {
+  id: ID!
+  playerId: ID!
+  player: Player!
+  sale: Boolean!
+  itemType: Int!
+  amount: Int!
+  created: Int!
+  anonymous: Boolean!
+  price: Int!
+}
+
+type MarketHistory {
+  id: ID!
+  playerId: ID!
+  player: Player!
+  sale: Boolean!
+  itemType: Int!
+  amount: Int!
+  price: Int!
+  expiresAt: Int!
+  inserted: Int!
+  state: Int!
+}
+
+# Input Types
+input CreateAccountInput {
+  name: String!
+  password: String!
+  email: String!
+}
+
+input CreatePlayerInput {
+  name: String!
+  accountId: ID!
+  sex: Int!
+  vocation: Int!
+}
+
+input CreateTownInput {
+  name: String!
+  posX: Int!
+  posY: Int!
+  posZ: Int!
+}
+
+input CreateGuildInput {
+  name: String!
+  ownerId: ID!
+}
+
+input BanAccountInput {
+  accountId: ID!
+  reason: String!
+  expiresAt: Int!
+  bannedBy: ID!
+}
+
+input CreateMarketOfferInput {
+  playerId: ID!
+  sale: Boolean!
+  itemType: Int!
+  amount: Int!
+  price: Int!
+  anonymous: Boolean!
+}
